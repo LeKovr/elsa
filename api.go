@@ -1,7 +1,6 @@
 package elsa
 
 import (
-	"fmt"
 	"net"
 	"net/http"
 
