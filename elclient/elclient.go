@@ -3,7 +3,7 @@ package elclient
 import (
 	"bytes"
 	"fmt"
-	json "github.com/gorilla/rpc/v2/json2"
+	rpc "github.com/gorilla/rpc/v2/json2"
 	"net/http"
 )
 
@@ -12,7 +12,7 @@ import (
 // Request prepares JSON-RPC v2 request
 func Request(url, method string, args interface{}) (req *http.Request, err error) {
 
-	message, err := json.EncodeClientRequest(method, args)
+	message, err := rpc.EncodeClientRequest(method, args)
 	if err != nil {
 		return
 	}
@@ -34,7 +34,7 @@ func Call(req *http.Request, result interface{}) (*http.Response, error) {
 	}
 	defer resp.Body.Close()
 
-	err = json.DecodeClientResponse(resp.Body, &result)
+	err = rpc.DecodeClientResponse(resp.Body, &result)
 	if err != nil {
 		return nil, fmt.Errorf("Couldn't decode response. %s", err)
 	}
