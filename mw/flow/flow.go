@@ -24,7 +24,7 @@ func New(logger *log.Logger) *Middleware {
 func (mw *Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	ctx := r.Context()
 	var data int
-	mw.Log.Printf("debug: flow init: %v", data)
+	mw.Log.Printf("trace: flow init: %v", data)
 	ctx = context.WithValue(ctx, Key, &data)
 	r = r.WithContext(ctx)
 	next(w, r)

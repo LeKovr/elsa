@@ -9,6 +9,7 @@ import (
 	"github.com/yosssi/ace"
 
 	"github.com/LeKovr/elsa/mw/flow"
+	"github.com/LeKovr/elsa/pagedata"
 	"github.com/LeKovr/elsa/struct/page"
 	"github.com/LeKovr/go-base/dirtree"
 )
@@ -108,11 +109,16 @@ func (mw *Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next htt
 	mw.Log.Printf("debug: Use template: %s", tmpl)
 	tpl, err := ace.Load("layout", tmpl, &ace.Options{BaseDir: mw.Config.Templates})
 
-	//mw.Log.Printf("TMPL:%+v", tpl.Tree.Root)
-
+	mw.Log.Printf("debug: TMPL:%+v", tpl.Tree.Root)
+	var pageData interface{}
+	if attr != nil {
+		pageData = attr.Data
+	} else {
+		pageData = pagedata.New()
+	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else if err := tpl.Execute(w, attr); err != nil {
+	} else if err := tpl.Execute(w, pageData); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	flow.Finish(r)

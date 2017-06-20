@@ -30,6 +30,11 @@ func New(logger *log.Logger, prefix string, service interface{}) *Middleware {
 }
 
 // -----------------------------------------------------------------------------
+func (mw *Middleware) Add(name string, service interface{}) {
+	mw.Server.RegisterService(service, name)
+}
+
+// -----------------------------------------------------------------------------
 
 // ServeHTTP is the middleware handler
 func (mw *Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
